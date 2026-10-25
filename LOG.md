@@ -33,6 +33,21 @@ Raw notes for the README and the essay. Every number is copied from a notebook o
   - passenger fall 0.7% (4,412)
 - Rates based on fewer than ~100 crashes are unreliable (e.g. 27.6% based on 76 crashes)
 
+## 2026-10-25: Logistic regression from scratch (NumPy)
+
+- 261 features (200 one-hot, 60 multi-hot, 1 standardized number)
+- Unit tests passed: sigmoid(0) = 0.5, loss(0.5, 1) = 0.693, the gradient matches the hand-computed example
+- Full-batch gradient descent, lr = 0.5, 1000 epochs, weights start at 0
+- Train loss: 0.6931 (epoch 0) → 0.1776 (epoch 100) → 0.1691 (epoch 1000), still slowly falling
+- Validation (2024) loss: 0.1414. Baseline ("every crash = 4.65%"): 0.1571, so the model is ~10% better
+- Validation (2024) ROC-AUC: 0.739. The baseline gets 0.5 by definition, since it gives every crash the same number
+- Top 10% riskiest crashes by model (2024): 12.7% were fatal (vs 3.6% overall) and they contain 34.9% of all fatal crashes
+- Largest odds ratios (correlation, not causation):
+  - raise: pedestrians involved x1.87, motorcyclists x1.74, hitting an obstacle x1.59, dark without street lighting x1.40, hours 0–6 x1.2–1.3
+  - lower: collision x0.43, daylight x0.47, passenger fall x0.56
+- Bug found: `participant_categories_Все участники` is 1 in every crash, so it acts as a second bias term. Its "x0.44" is meaningless
+- Validation loss is lower than train loss because 2024 has fewer fatal crashes (3.6% vs 4.65%), which makes it easier to predict. Losses on sets with different fatal rates can't be compared directly
+
 ## My notes (I write these myself)
 
 - What surprised me:
