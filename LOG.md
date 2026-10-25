@@ -46,7 +46,28 @@ Raw notes for the README and the essay. Every number is copied from a notebook o
   - raise: pedestrians involved x1.87, motorcyclists x1.74, hitting an obstacle x1.59, dark without street lighting x1.40, hours 0–6 x1.2–1.3
   - lower: collision x0.43, daylight x0.47, passenger fall x0.56
 - Bug found: `participant_categories_Все участники` is 1 in every crash, so it acts as a second bias term. Its "x0.44" is meaningless
+- After removing the constant column (260 features): train loss 0.1692, validation loss 0.1416, validation ROC-AUC 0.739, top 10% unchanged (12.7% fatal, 34.9% of deaths)
+- Key finding (comparison inside one feature group, which is valid): in the dark, no street lighting has odds x1.35 and lighting on has x0.68. That's about 2x higher odds of death on unlit roads. Correlation only: unlit roads may also be faster or more rural
 - Validation loss is lower than train loss because 2024 has fewer fatal crashes (3.6% vs 4.65%), which makes it easier to predict. Losses on sets with different fatal rates can't be compared directly
+
+## 2026-10-25: Final test on 2025 (run once, model frozen)
+
+- Test loss 0.1336 vs baseline 0.1507 (~11% better)
+- Test ROC-AUC: 0.754
+- Fatal rate: 3.4% overall, 13.3% in the model's top 10% riskiest crashes (3.9x)
+- The top 10% contains 38.9% of all fatal crashes in 2025
+- Test has only ~285 fatal crashes, so the difference between validation AUC (0.739) and test AUC (0.754) is within noise
+
+## 2026-10-25 (evening): Checks, plots, cleanup
+
+- Gradient check: on 2,000 training crashes with random weights, the analytic gradient matches the numerical one (nudging each weight by ±1e-6). Largest difference 6.8e-11, relative error 5.0e-10
+- Calibration (frozen model, 10 risk groups): average predicted 3.86% vs real 3.62% in 2024, 3.47% vs 3.41% in 2025
+  - I expected over-prediction because fatal crashes became rarer. It mostly didn't happen: the model has no year feature, but its average prediction falls from 4.68% (train) to 3.47% (2025), so the drop is mostly explained by the mix of crashes changing
+  - Riskiest group under-predicted in 2025: 10.7% predicted vs 13.3% real. Each group has only ~25–30 fatal crashes, so it's noisy
+- Raw fatal rate by lighting (2015–2025): daylight 3.2%, twilight 4.1%, dark with lights on 6.1% (n = 35,179), dark with lights off 15.9% (n = 176), dark without street lights 24.0% (n = 484)
+  - Raw odds unlit vs lit ≈ 5x; model-adjusted ≈ 2x (1.35 / 0.68)
+- Privacy: the exploration notebook no longer prints a single crash record (address, people) or addresses in the table preview
+- Added explanations to all three notebooks and plots: fatal rate by hour, by lighting, calibration
 
 ## My notes (I write these myself)
 

@@ -46,3 +46,17 @@ def train(X, y, lr=0.5, epochs=1000, X_val=None, y_val=None):
             print(f"epoch {epoch}: train loss {history['train'][-1]:.4f}")
 
     return w, b, history
+
+def numerical_gradient(X, y, w, b, eps=1e-6):
+    """Estimate the gradient without calculus, to check gradients() above.
+    Nudge one weight up and down by eps and see how the loss changes:
+        dL/dw_j ≈ (L(w_j + eps) - L(w_j - eps)) / (2·eps)
+    Slow (2 forward passes per weight), so use it only on a small sample."""
+    num_dw = np.zeros_like(w)
+    for j in range(len(w)):
+        w_plus, w_minus = w.copy(), w.copy()
+        w_plus[j] += eps
+        w_minus[j] -= eps
+        num_dw[j] = (loss(predict_proba(X, w_plus, b), y) - loss(predict_proba(X, w_minus, b), y)) / (2 * eps)
+    num_db = (loss(predict_proba(X, w, b + eps), y) - loss(predict_proba(X, w, b - eps), y)) / (2 * eps)
+    return num_dw, num_db
