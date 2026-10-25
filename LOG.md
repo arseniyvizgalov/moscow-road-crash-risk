@@ -18,6 +18,8 @@ Raw notes for the README and the essay. Every number is copied from a notebook o
 - Baseline "never fatal" scores 95.6% accuracy, so accuracy is useless here. I'll use ROC-AUC and recall
 - Split by time: train on 2015–2023, validate on 2024, test on 2025 (once, at the end). 2026 is dropped
 - Leakage: `severity`, `dead_count`, `injured_count` and `health_status` are never used as features
+- Split sizes: train 77,181 (4.65% fatal), validation 8,859 (3.62%), test 8,352 (3.41%)
+  - The fatal share falls over time, so a model trained on 2015–2023 may overestimate risk for 2025. That affects calibration and log loss, not ranking (ROC-AUC)
 
 ## First findings (fatality rate = share of crashes with a death)
 
