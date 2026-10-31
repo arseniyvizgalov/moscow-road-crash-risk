@@ -69,9 +69,3 @@ Raw notes for the README and the essay. Every number is copied from a notebook o
 - Privacy: the exploration notebook no longer prints a single crash record (address, people) or addresses in the table preview
 - Added explanations to all three notebooks and plots: fatal rate by hour, by lighting, calibration
 
-## My notes (I write these myself)
-
-- What surprised me:
-- Hardest bug or concept, and what made it click:
-- First time the loss went down (from → to, at which step):
-- Final test metrics:
