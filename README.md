@@ -9,10 +9,6 @@
 
 ---
 
-## Why I built this
-
-✏️ *(Write 2–3 sentences in your own words: why this problem matters to you.)*
-
 ## Data
 
 - **Source:** [dtp-stat.ru](https://dtp-stat.ru/opendata/) open data, built from official traffic police (GIBDD) records
@@ -88,8 +84,6 @@ Odds ratio = e^weight: x1.8 means 1.8 times the odds of a death. Correlation, no
 Unlit vs lit roads at night: 1.35 / 0.68 ≈ **2x the odds**. Raw numbers show a much bigger gap (24% vs 6% fatal, about 5x the odds). After accounting for the other features it shrinks to about 2x, so part of the raw gap comes from other factors, such as when, where and what kind of crash happened.
 
 ## The math
-
-<!-- ✏️ Rewrite this section in your own words once you can explain each step without looking. -->
 
 For each crash the model computes a **score** `z = w·x + b`: every feature that is "on" adds its weight `w`, and `b` is the base level.
 The **sigmoid** `p = 1 / (1 + e^(−z))` squeezes the score into a probability between 0 and 1.
